@@ -19,3 +19,15 @@ make volume=ploa2023 relatorios=v0.6.87 execucao=v0.5.16
 ```
 
 O valor do argumento `volume` vai ser utilizado para taguear a imagem.
+
+## Publicação da imagem no Dockerhub
+
+Para publicar a imagem no Dockerhub é necessário criar uma [conta](https://hub.docker.com/signup/) e um repositório no [Docker Hub](https://docs.docker.com/docker-hub/repos/#creating-a-repository). 
+
+Como exemplo, para publicar para o repositório [`fjuniorr/volumes`](https://hub.docker.com/repository/docker/fjuniorr/volumes/) execute
+
+```bash
+docker tag volumes:ploa2023 fjuniorr/volumes:ploa2023
+docker login
+docker push fjuniorr/volumes:ploa2023
+```
