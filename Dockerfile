@@ -5,7 +5,7 @@ ARG reest_version
 WORKDIR /home/rstudio
 COPY texmf /opt/texmf-local
 RUN texhash
-RUN Rscript -e "install.packages('dotenv')"
+RUN Rscript -e "install.packages('dotenv', repos = 'https://packagemanager.posit.co/cran/2020-04-24/')"
 RUN --mount=type=secret,id=secret Rscript -e \
     "dotenv::load_dot_env('/run/secrets/secret'); remotes::install_bitbucket('dcgf/relatorios@$relatorios_version', auth_user = Sys.getenv('BITBUCKET_AUTH_USER'), password = Sys.getenv('BITBUCKET_APP_PASSWORD'))"
 RUN --mount=type=secret,id=secret Rscript -e \
