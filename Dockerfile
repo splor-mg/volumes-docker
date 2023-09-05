@@ -5,7 +5,20 @@ ARG reest_version
 WORKDIR /home/rstudio
 
 RUN export DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install -y python3 python3-pip
+RUN apt-get update
+
+RUN apt-get install -y python3 python3-pip
+
+RUN apt-get install -y libpoppler-glib-dev poppler-utils libwxgtk3.0-gtk3-dev
+RUN wget https://github.com/vslavik/diff-pdf/releases/download/v0.5.1/diff-pdf-0.5.1.tar.gz -O /tmp/diff-pdf.tar.gz && \
+    tar -xzf /tmp/diff-pdf.tar.gz -C /tmp && \
+    cd /tmp/diff-pdf-0.5.1 && \
+    ./configure && \
+    make && \
+    make install
+
+RUN git clone https://github.com/so-fancy/diff-so-fancy.git /opt/diff-so-fancy && \
+    ln -s /opt/diff-so-fancy/diff-so-fancy /usr/local/bin/
 
 COPY texmf /opt/texmf-local
 RUN texhash
