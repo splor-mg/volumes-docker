@@ -4,34 +4,126 @@
 #
 #    pip-compile
 #
+attrs==23.1.0
+    # via
+    #   jsonschema
+    #   referencing
 build==1.0.0
     # via pip-tools
+certifi==2023.7.22
+    # via requests
+chardet==5.2.0
+    # via frictionless
+charset-normalizer==3.2.0
+    # via requests
 click==8.1.7
     # via
     #   pip-tools
     #   typer
+colorama==0.4.6
+    # via typer
+et-xmlfile==1.1.0
+    # via openpyxl
+frictionless[excel]==4.40.11
+    # via -r requirements.in
+idna==3.4
+    # via requests
 iniconfig==2.0.0
     # via pytest
+isodate==0.6.1
+    # via frictionless
+jinja2==3.1.2
+    # via frictionless
+jsonschema==4.19.0
+    # via
+    #   frictionless
+    #   tableschema-to-template
+jsonschema-specifications==2023.7.1
+    # via jsonschema
+markdown-it-py==3.0.0
+    # via rich
+marko==2.0.0
+    # via frictionless
+markupsafe==2.1.3
+    # via jinja2
+mdurl==0.1.2
+    # via markdown-it-py
+openpyxl==3.1.2
+    # via frictionless
 packaging==23.1
     # via
     #   build
     #   pytest
+petl==1.7.14
+    # via frictionless
 pip-tools==6.14.0
     # via -r requirements.in
 pluggy==1.2.0
     # via
     #   -r requirements.in
     #   pytest
+pygments==2.16.1
+    # via rich
 pyproject-hooks==1.0.0
     # via build
 pytest==7.4.1
     # via -r requirements.in
-typer==0.9.0
-    # via -r requirements.in
+python-dateutil==2.8.2
+    # via frictionless
+python-slugify==8.0.1
+    # via frictionless
+pyyaml==6.0.1
+    # via
+    #   frictionless
+    #   tableschema-to-template
+referencing==0.30.2
+    # via
+    #   jsonschema
+    #   jsonschema-specifications
+requests==2.31.0
+    # via frictionless
+rfc3986==2.0.0
+    # via frictionless
+rich==13.5.2
+    # via typer
+rpds-py==0.10.2
+    # via
+    #   jsonschema
+    #   referencing
+shellingham==1.5.3
+    # via typer
+simpleeval==0.9.13
+    # via frictionless
+six==1.16.0
+    # via
+    #   isodate
+    #   python-dateutil
+stringcase==1.2.0
+    # via frictionless
+tableschema-to-template==0.0.13
+    # via frictionless
+tabulate==0.9.0
+    # via frictionless
+text-unidecode==1.3
+    # via python-slugify
+typer[all]==0.9.0
+    # via
+    #   -r requirements.in
+    #   frictionless
 typing-extensions==4.7.1
     # via typer
+urllib3==2.0.4
+    # via requests
+validators==0.22.0
+    # via frictionless
 wheel==0.41.2
     # via pip-tools
+xlrd==2.0.1
+    # via frictionless
+xlsxwriter==3.1.3
+    # via tableschema-to-template
+xlwt==1.3.0
+    # via frictionless
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip

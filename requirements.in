@@ -2,3 +2,4 @@ pip-tools==6.14.0
 pytest
 pluggy==1.2.0
 typer
+frictionless[excel]==4.40.11
