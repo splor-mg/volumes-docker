@@ -15,7 +15,7 @@ Abra o arquivo `.env` e preencha as informações solicitados de acordo com o te
 Para construir a imagem a partir do `Dockerfile` execute
 
 ```bash
-make image=ploa2023 relatorios=v0.6.75 execucao=v0.5.15 reest=v0.2.6
+make image=ploa2024 relatorios=v0.6.75 execucao=v0.5.15 reest=v0.2.6
 ```
 
 O valor do argumento `volume` vai ser utilizado para taguear a imagem.
@@ -24,10 +24,9 @@ O valor do argumento `volume` vai ser utilizado para taguear a imagem.
 
 Para publicar a imagem no Dockerhub é necessário criar uma [conta](https://hub.docker.com/signup/) e um repositório no [Docker Hub](https://docs.docker.com/docker-hub/repos/#creating-a-repository). 
 
-Como exemplo, para publicar para o repositório [`fjuniorr/volumes`](https://hub.docker.com/repository/docker/fjuniorr/volumes/) execute
+Como exemplo, para publicar para o repositório [`fjuniorr/volumes`](https://hub.docker.com/repository/docker/fjuniorr/volumes/), depois de fazer login via Docker Desktop execute
 
 ```bash
-docker tag volumes:ploa2023 fjuniorr/volumes:ploa2023
-docker login
-docker push fjuniorr/volumes:ploa2023
+docker tag volumes:ploa2024 fjuniorr/volumes:ploa2024
+docker push fjuniorr/volumes:ploa2024
 ```
