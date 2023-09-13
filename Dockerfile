@@ -9,7 +9,7 @@ RUN apt-get update
 
 RUN apt-get install -y build-essential libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev
 RUN wget https://www.python.org/ftp/python/3.11.5/Python-3.11.5.tgz -O /tmp/python.tgz && \
-    tar -xzf /tmp/python.tgz && \
+    tar -xzf /tmp/python.tgz -C /tmp && \
     cd /tmp/Python-3.11.5 && \
     ./configure --enable-optimizations && \
     make altinstall && \
