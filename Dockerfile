@@ -34,8 +34,8 @@ COPY requirements.txt .
 RUN python3 -m pip install -r requirements.txt
 
 RUN Rscript -e "install.packages('dotenv', repos = 'https://packagemanager.posit.co/cran/2020-04-24/')"
-
 RUN Rscript -e "install.packages('writexl', repos = 'https://packagemanager.posit.co/cran/2020-04-24/')"
+RUN Rscript -e "install.packages('here', repos = 'https://packagemanager.posit.co/cran/2020-04-24/')"
 
 RUN --mount=type=secret,id=secret Rscript -e \
     "dotenv::load_dot_env('/run/secrets/secret'); remotes::install_bitbucket('dcgf/relatorios@$relatorios_version', auth_user = Sys.getenv('BITBUCKET_AUTH_USER'), password = Sys.getenv('BITBUCKET_APP_PASSWORD'))"
