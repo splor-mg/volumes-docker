@@ -10,6 +10,8 @@ attrs==23.1.0
     # via
     #   frictionless
     #   jsonschema
+beautifulsoup4==4.12.2
+    # via pandas
 certifi==2023.7.22
     # via requests
 chardet==5.2.0
@@ -20,14 +22,20 @@ click==8.1.7
     # via typer
 colorama==0.4.6
     # via typer
+cssselect==1.2.0
+    # via pyquery
+defusedxml==0.7.1
+    # via odfpy
 dpm @ git+https://github.com/splor-mg/dpm.git@main
     # via -r requirements.in
 et-xmlfile==1.1.0
     # via openpyxl
-frictionless[excel,pandas]==5.15.10
+frictionless[excel,html]==5.15.10
     # via
     #   -r requirements.in
     #   dpm
+html5lib==1.1
+    # via pandas
 humanize==4.8.0
     # via frictionless
 idna==3.4
@@ -42,6 +50,10 @@ jsonschema==4.17.3
     # via
     #   frictionless
     #   tableschema-to-template
+lxml==4.9.3
+    # via
+    #   pandas
+    #   pyquery
 markdown-it-py==3.0.0
     # via rich
 marko==2.0.0
@@ -52,12 +64,16 @@ mdurl==0.1.2
     # via markdown-it-py
 numpy==1.25.2
     # via pandas
+odfpy==1.4.1
+    # via pandas
 openpyxl==3.1.2
-    # via frictionless
+    # via
+    #   frictionless
+    #   pandas
 packaging==23.1
     # via pytest
-pandas==2.1.0
-    # via frictionless
+pandas[excel,html]==2.1.0
+    # via -r requirements.in
 petl==1.7.14
     # via frictionless
 pluggy==1.3.0
@@ -68,6 +84,8 @@ pydantic-core==2.6.3
     # via pydantic
 pygments==2.16.1
     # via rich
+pyquery==2.0.0
+    # via frictionless
 pyrsistent==0.19.3
     # via jsonschema
 pytest==7.4.2
@@ -79,6 +97,8 @@ python-dateutil==2.8.2
 python-slugify==8.0.1
     # via frictionless
 pytz==2023.3.post1
+    # via pandas
+pyxlsb==1.0.10
     # via pandas
 pyyaml==6.0.1
     # via
@@ -98,8 +118,11 @@ simpleeval==0.9.13
     # via frictionless
 six==1.16.0
     # via
+    #   html5lib
     #   isodate
     #   python-dateutil
+soupsieve==2.5
+    # via beautifulsoup4
 stringcase==1.2.0
     # via frictionless
 tableschema-to-template==0.0.13
@@ -126,9 +149,15 @@ urllib3==2.0.4
     # via requests
 validators==0.22.0
     # via frictionless
+webencodings==0.5.1
+    # via html5lib
 xlrd==2.0.1
-    # via frictionless
+    # via
+    #   frictionless
+    #   pandas
 xlsxwriter==3.1.3
-    # via tableschema-to-template
+    # via
+    #   pandas
+    #   tableschema-to-template
 xlwt==1.3.0
     # via frictionless

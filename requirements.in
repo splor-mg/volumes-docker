@@ -1,3 +1,4 @@
 pytest
-frictionless[excel,pandas]
+frictionless[excel,html]
+pandas[excel,html]
 git+https://github.com/splor-mg/dpm.git@main
