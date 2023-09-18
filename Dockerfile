@@ -28,6 +28,7 @@ RUN git clone https://github.com/so-fancy/diff-so-fancy.git /opt/diff-so-fancy &
 
 COPY texmf /opt/texmf-local
 RUN texhash
+RUN sed -i 's/\\RequirePackage{ae}/\\RequirePackage{helvet}\n  \\renewcommand{\\familydefault}{\\sfdefault}/g' /usr/local/lib/R/share/texmf/tex/latex/Sweave.sty # remover pacote ae. vide splor-mg/volumes-docker#5
 
 COPY requirements.txt .
 
