@@ -15,7 +15,7 @@ Abra o arquivo `.env` e preencha as informações solicitados de acordo com o te
 Para construir a imagem a partir do `Dockerfile` execute
 
 ```bash
-make image=ploa2024 relatorios=v0.7.14 execucao=v0.5.18 reest=v0.2.6
+make image=ploa2024 relatorios=v0.7.17 execucao=v0.5.18 reest=v0.2.6
 ```
 
 O valor do argumento `volume` vai ser utilizado para taguear a imagem.
