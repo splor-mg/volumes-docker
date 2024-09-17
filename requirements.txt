@@ -9,7 +9,7 @@ attrs==24.2.0
     #   referencing
 beautifulsoup4==4.12.3
     # via pandas
-certifi==2024.7.4
+certifi==2024.8.30
     # via requests
 chardet==5.2.0
     # via frictionless
@@ -21,11 +21,11 @@ cssselect==1.2.0
     # via pyquery
 defusedxml==0.7.1
     # via odfpy
-dpm @ git+https://github.com/splor-mg/dpm.git@980ba4a1eb17de34af08ca93d7516b343bfe3019
+dpm @ git+https://github.com/splor-mg/dpm.git@a96dd7b89b8b1f1e76870b8bba593184a6c8aece
     # via -r requirements.in
 et-xmlfile==1.1.0
     # via openpyxl
-frictionless==5.17.0
+frictionless==5.17.1
     # via
     #   -r requirements.in
     #   dpm
@@ -33,7 +33,7 @@ html5lib==1.1
     # via pandas
 humanize==4.10.0
     # via frictionless
-idna==3.7
+idna==3.10
     # via requests
 iniconfig==2.0.0
     # via pytest
@@ -59,7 +59,7 @@ markupsafe==2.1.5
     # via jinja2
 mdurl==0.1.2
     # via markdown-it-py
-numpy==2.1.0
+numpy==2.1.1
     # via pandas
 odfpy==1.4.1
     # via pandas
@@ -77,15 +77,15 @@ petl==1.7.15
     # via frictionless
 pluggy==1.5.0
     # via pytest
-pydantic==2.8.2
+pydantic==2.9.2
     # via frictionless
-pydantic-core==2.20.1
+pydantic-core==2.23.4
     # via pydantic
 pygments==2.18.0
     # via rich
-pyquery==2.0.0
+pyquery==2.0.1
     # via frictionless
-pytest==8.3.2
+pytest==8.3.3
     # via -r requirements.in
 python-calamine==0.2.3
     # via pandas
@@ -97,7 +97,7 @@ python-dotenv==1.0.1
     # via dpm
 python-slugify==8.0.4
     # via frictionless
-pytz==2024.1
+pytz==2024.2
     # via pandas
 pyxlsb==1.0.10
     # via pandas
@@ -115,7 +115,7 @@ requests==2.32.3
     #   frictionless
 rfc3986==2.0.0
     # via frictionless
-rich==13.7.1
+rich==13.8.1
     # via typer
 rpds-py==0.20.0
     # via
@@ -140,7 +140,7 @@ tabulate==0.9.0
     # via frictionless
 text-unidecode==1.3
     # via python-slugify
-typer==0.12.4
+typer==0.12.5
     # via
     #   dpm
     #   frictionless
@@ -154,9 +154,9 @@ tzdata==2024.1
     # via pandas
 unidecode==1.3.8
     # via dpm
-urllib3==2.2.2
+urllib3==2.2.3
     # via requests
-validators==0.33.0
+validators==0.34.0
     # via frictionless
 webencodings==0.5.1
     # via html5lib
