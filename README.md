@@ -34,9 +34,9 @@ O valor do argumento `volume` vai ser utilizado para taguear a imagem.
 
 Para publicar a imagem no Dockerhub é necessário criar uma [conta](https://hub.docker.com/signup/) e um repositório no [Docker Hub](https://docs.docker.com/docker-hub/repos/#creating-a-repository). 
 
-Como exemplo, para publicar para o repositório [`fjuniorr/volumes`](https://hub.docker.com/repository/docker/fjuniorr/volumes/), depois de fazer login via Docker Desktop execute
+Como exemplo, para publicar para o repositório [`splormg/volumes`](https://hub.docker.com/repository/docker/splormg/volumes/), depois de fazer login via Docker Desktop execute
 
 ```bash
-docker tag volumes:ploa2025 fjuniorr/volumes:ploa2025
-docker push fjuniorr/volumes:ploa2025
+docker tag volumes:ploa2025 splormg/volumes:ploa2025
+docker push splormg/volumes:ploa2025
 ```
