@@ -29,11 +29,8 @@ jobs:
         id: changes
         uses: tj-actions/changed-files@v35
         with:
-          files: '*.txt'
-      - name: Debug changed files
+          files: 'requirements.txt'
+      - name: Trigger repository_dispatch in splor-mg/volumes-docker
+        if: steps.changes.outputs.any_changed == 'true'
         run: |
-          echo "Any changed: ${{ steps.changes.outputs.any_changed }}"
-          echo "All changed files: ${{ steps.changes.outputs.all_changed_files }}"
-          echo "Added files: ${{ steps.changes.outputs.added_files }}"
-          echo "Modified files: ${{ steps.changes.outputs.modified_files }}"
-          echo "Removed files: ${{ steps.changes.outputs.removed_files }}"
+          docker buildx build --tag volumes:ploa2025 --secret id=secret,src=.env --build-arg relatorios_version=v0.7.64 --build-arg execucao_version=v0.5.22 --build-arg reest_version=v0.2.6 .
