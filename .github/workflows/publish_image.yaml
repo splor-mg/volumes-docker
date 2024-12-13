@@ -1,0 +1,29 @@
+name: Publish Image to Docker Hub
+
+on:
+  # workflow_dispatch:
+  schedule:
+    - cron:  '01 9 * * 1-5'
+
+jobs:
+  all:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+      - name: Update Python packages
+        run: |
+          uv pip compile requirements.in > requirements.txt
+      - name: Get changed files
+        id: changes
+        uses: tj-actions/changed-files@v35
+        with:
+          files: 'requirements.txt'
+      - name: Debug changed files
+        run: |
+          echo "Any changed: ${{ steps.changes.outputs.any_changed }}"
+          echo "All changed files: ${{ steps.changes.outputs.all_changed_files }}"
+          echo "Added files: ${{ steps.changes.outputs.added_files }}"
+          echo "Modified files: ${{ steps.changes.outputs.modified_files }}"
+          echo "Removed files: ${{ steps.changes.outputs.removed_files }}"
