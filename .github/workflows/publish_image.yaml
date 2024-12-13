@@ -15,6 +15,16 @@ jobs:
       - name: Update Python packages
         run: |
           uv pip compile requirements.in > requirements.txt
+      - name: Push some files inside the workflow run
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          echo "This is a dummy file." > data/dummy.txt
+
+          git add data/dummy.txt
+          git add requirements.txt
+          git commit -m "Add requirements.txt and dummy file for testing"
       - name: Get changed files
         id: changes
         uses: tj-actions/changed-files@v35
