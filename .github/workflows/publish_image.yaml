@@ -19,12 +19,6 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-          echo "This is a dummy file." > dummy.txt
-
-          git add dummy.txt
-          git add requirements.txt
-          git commit -m "Add requirements.txt and dummy file for testing"
       - name: Get changed files
         id: changes
         uses: tj-actions/changed-files@v35
@@ -38,3 +32,6 @@ jobs:
         if: steps.changes.outputs.any_changed == 'true'
         run: |
           docker buildx build --tag volumes:ploa2025 --secret id=secret,src=.env --build-arg relatorios_version=v0.7.64 --build-arg execucao_version=v0.5.22 --build-arg reest_version=v0.2.6 .
+          git add requirements.txt
+          git commit -m "Update requirements.txt"
+          git push origin main
