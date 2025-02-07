@@ -30,6 +30,10 @@ jobs:
         uses: tj-actions/changed-files@v35
         with:
           files: 'requirements.txt'
+      - name: Create secret file from user and password
+        run: | 
+          echo "BITBUCKET_USER=${{ secrets.BITBUCKET_USER }}" > .env
+          echo "BITBUCKET_PASSWORD=${{ secrets.BITBUCKET_PASSWORD }}" >> .env
       - name: Trigger repository_dispatch in splor-mg/volumes-docker
         if: steps.changes.outputs.any_changed == 'true'
         run: |
