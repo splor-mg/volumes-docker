@@ -34,7 +34,7 @@ jobs:
         run: | 
           echo "BITBUCKET_USER=${{ secrets.BITBUCKET_USER }}" > .env
           echo "BITBUCKET_PASSWORD=${{ secrets.BITBUCKET_PASSWORD }}" >> .env
-      - name: Trigger repository_dispatch in splor-mg/volumes-docker
+      - name: Create volumes-docker's image
         if: steps.changes.outputs.any_changed == 'true'
         run: |
           docker buildx build --tag volumes:ploa2025 --secret id=secret,src=.env --build-arg relatorios_version=v0.7.64 --build-arg execucao_version=v0.5.22 --build-arg reest_version=v0.2.6 .
