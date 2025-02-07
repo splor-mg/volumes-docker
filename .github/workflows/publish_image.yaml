@@ -9,16 +9,15 @@ jobs:
   all:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Repo checkout
+        uses: actions/checkout@v4
+      - name: Configure gituser
+        uses: fregante/setup-git-user@v2
       - name: Install uv
         uses: astral-sh/setup-uv@v4
       - name: Update Python packages
         run: |
           uv pip compile requirements.in > requirements.txt
-      - name: Push some files inside the workflow run
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
       - name: Get changed files
         id: changes
         uses: tj-actions/changed-files@v35
