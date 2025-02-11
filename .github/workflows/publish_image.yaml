@@ -23,7 +23,7 @@ jobs:
       - name: Versões dos pacotes R
         run: |
           Rscript -e "install.packages('renv')" && Rscript -e 'renv::install()'
-          installed.packages()[, c("Package", "Version")] > requirements-R.txt
+          installed.packages()[, c("Package", "Version")] > requirements_R.txt
       - name: Get changed files
         id: changes
         uses: tj-actions/changed-files@v35
