@@ -1,0 +1,16 @@
+Package: volumes-docker
+Depends:
+    R (== 3.6.3)
+Imports:
+    dotenv,
+    writexl (>= 3.0.0),
+    here (>= 2.0.0),
+    futile.logger,
+    relatorios,
+    exeucacao,
+    reest
+Remotes:
+    bitbucket::dcgf/relatorios,
+    bitbucket::dcgf/execucao,
+    bitbucket::dcgf/reest,
+Encoding: UTF-8
