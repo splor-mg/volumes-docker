@@ -34,18 +34,6 @@ COPY requirements.txt .
 
 RUN python3 -m pip install -r requirements.txt
 
-RUN Rscript -e "install.packages('dotenv', repos = 'https://packagemanager.posit.co/cran/2020-04-24/')"
-RUN Rscript -e "install.packages('writexl', repos = 'https://packagemanager.posit.co/cran/2020-04-24/')"
-RUN Rscript -e "install.packages('here', repos = 'https://packagemanager.posit.co/cran/2020-04-24/')"
-RUN Rscript -e "install.packages('futile.logger', repos = 'https://packagemanager.posit.co/cran/2020-04-24/')"
-
-RUN --mount=type=secret,id=secret Rscript -e \
-    "dotenv::load_dot_env('/run/secrets/secret'); remotes::install_bitbucket('dcgf/relatorios@$relatorios_version', auth_user = Sys.getenv('BITBUCKET_USER'), password = Sys.getenv('BITBUCKET_PASSWORD'))"
-
-RUN --mount=type=secret,id=secret Rscript -e \
-    "dotenv::load_dot_env('/run/secrets/secret'); remotes::install_bitbucket('dcgf/execucao@$execucao_version', auth_user = Sys.getenv('BITBUCKET_USER'), password = Sys.getenv('BITBUCKET_PASSWORD'))"
-
-RUN --mount=type=secret,id=secret Rscript -e \
-    "dotenv::load_dot_env('/run/secrets/secret'); remotes::install_bitbucket('dcgf/reest@$reest_version', auth_user = Sys.getenv('BITBUCKET_USER'), password = Sys.getenv('BITBUCKET_PASSWORD'))"
+RUN Rscript -e "install.packages('renv')" && Rscript -e 'renv::install()'
 
 ENTRYPOINT ["/bin/bash", "-c"]
