@@ -38,5 +38,7 @@ jobs:
         run: |
           docker buildx build --tag volumes:ploa2025 --secret id=secret,src=.env --build-arg relatorios_version=v0.7.64 --build-arg execucao_version=v0.5.22 --build-arg reest_version=v0.2.6 .
           git add requirements.txt
-          git commit -m "Update requirements"
+          git commit -m "Update requirements.txt" || true
+          git add requirements-R.txt
+          git commit -m "Update requirements_R.txt" || true
           git push origin main
