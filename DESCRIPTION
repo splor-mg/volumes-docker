@@ -7,7 +7,7 @@ Imports:
     here (>= 2.0.0),
     futile.logger,
     relatorios,
-    exeucacao,
+    execucao,
     reest
 Remotes:
     bitbucket::dcgf/relatorios,
