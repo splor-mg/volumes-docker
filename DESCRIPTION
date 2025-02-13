@@ -12,5 +12,5 @@ Imports:
 Remotes:
     bitbucket::dcgf/relatorios,
     bitbucket::dcgf/execucao,
-    bitbucket::dcgf/reest,
+    bitbucket::dcgf/reest
 Encoding: UTF-8
