@@ -21,11 +21,14 @@ jobs:
       - name: Install R
         uses: r-lib/actions/setup-r@v2
       - name: Versões dos pacotes R
+        env:
+          BITBUCKET_USER: ${{ secrets.BITBUCKET_USER }}
+          BITBUCKET_PASSWORD: ${{ secrets.BITBUCKET_PASSWORD }}
         run: |
           Rscript -e "install.packages('renv')"
           Rscript -e "options(renv.config.bitbucket.host = 'https://bitbucket.org')"
-          Rscript -e "options(renv.config.bitbucket.auth_user = ${{ secrets.BITBUCKET_USER }})"
-          Rscript -e "options(renv.config.bitbucket.password = ${{ secrets.BITBUCKET_PASSWORD }})"
+          Rscript -e "options(renv.config.bitbucket.auth_user = $BITBUCKET_USER)"
+          Rscript -e "options(renv.config.bitbucket.password = $BITBUCKET_PASSWORD)"
           Rscript -e "renv::install()"
           installed.packages()[, c("Package", "Version")] > requirements_R.txt
       - name: Get changed files
