@@ -32,7 +32,7 @@ jobs:
           Rscript -e "options(renv.config.bitbucket.password = Sys.getenv('BITBUCKET_PASSWORD'))"
           Rscript -e "if (!file.exists('renv.lock')) renv::snapshot()"
           Rscript -e "renv::restore()"
-          Rscript -e "install.packages(c('dotenv', 'writexl', 'here', 'futile.logger'), repos='https://cloud.r-project.org')"
+          Rscript -e "install.packages(c('dotenv', 'readxl', 'writexl', 'here', 'futile.logger'), repos='https://cloud.r-project.org')"
           Rscript -e "renv::install('bitbucket::dcgf/relatorios')"
           Rscript -e "renv::install('bitbucket::dcgf/execucao')"
           Rscript -e "renv::install('bitbucket::dcgf/reest')"
