@@ -26,9 +26,10 @@ jobs:
           BITBUCKET_PASSWORD: ${{ secrets.BITBUCKET_PASSWORD }}
         run: |
           Rscript -e "install.packages('renv')"
+          Rscript -e "library('renv')"
           Rscript -e "options(renv.config.bitbucket.host = 'https://bitbucket.org')"
-          Rscript -e "options(renv.config.bitbucket.auth_user = $BITBUCKET_USER)"
-          Rscript -e "options(renv.config.bitbucket.password = $BITBUCKET_PASSWORD)"
+          Rscript -e "options(renv.config.bitbucket.auth_user = Sys.getenv('BITBUCKET_USER'))"
+          Rscript -e "options(renv.config.bitbucket.password = Sys.getenv('BITBUCKET_PASSWORD'))"
           Rscript -e "renv::install()"
           installed.packages()[, c("Package", "Version")] > requirements_R.txt
       - name: Get changed files
