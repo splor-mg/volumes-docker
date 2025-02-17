@@ -26,20 +26,12 @@ jobs:
           BITBUCKET_PASSWORD: ${{ secrets.BITBUCKET_PASSWORD }}
         run: |
           Rscript -e "install.packages('renv', repos='https://cloud.r-project.org')"
-          Rscript -e "library(renv)"
+          # Rscript -e "library(renv)"
           Rscript -e "options(renv.config.bitbucket.host = 'https://bitbucket.org')"
           Rscript -e "options(renv.config.bitbucket.auth_user = Sys.getenv('BITBUCKET_USER'))"
           Rscript -e "options(renv.config.bitbucket.password = Sys.getenv('BITBUCKET_PASSWORD'))"
-          Rscript -e "if (!file.exists('renv.lock')) renv::snapshot()"
-          Rscript -e "renv::restore()"
-          Rscript -e "install.packages(c('dotenv', 'readxl', 'writexl', 'here', 'futile.logger'), repos='https://cloud.r-project.org')"
-          Rscript -e "renv::install('bitbucket::dcgf/relatorios')"
-          Rscript -e "renv::install('bitbucket::dcgf/execucao')"
-          Rscript -e "renv::install('bitbucket::dcgf/reest')"
+          Rscript -e 'renv::install()'
           
-          
-          Rscript -e "renv::restore()"
-
       - name: Get changed files
         id: changes
         uses: tj-actions/changed-files@v35
