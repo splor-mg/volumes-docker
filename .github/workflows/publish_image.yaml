@@ -31,6 +31,7 @@ jobs:
           Rscript -e "options(renv.config.bitbucket.auth_user = Sys.getenv('BITBUCKET_USER'))"
           Rscript -e "options(renv.config.bitbucket.password = Sys.getenv('BITBUCKET_PASSWORD'))"
           Rscript -e 'renv::install()'
+          Rscript -e 'installed.packages()[, c("Package", "Version")]' > requirements_R.txt
           
       - name: Get changed files
         id: changes
