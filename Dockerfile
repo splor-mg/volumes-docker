@@ -34,8 +34,7 @@ COPY requirements.txt .
 
 RUN python3 -m pip install -r requirements.txt
 
-RUN Rscript -e "install.packages('renv')"
-RUN Rscript -e "library('renv')"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/Archive/renv/renv_0.14.0.tar.gz', repos = NULL, type = 'source')"
 RUN Rscript -e "options(renv.config.bitbucket.host = 'https://bitbucket.org')"
 RUN Rscript -e "options(renv.config.bitbucket.auth_user = Sys.getenv('BITBUCKET_USER'))"
 RUN Rscript -e "options(renv.config.bitbucket.password = Sys.getenv('BITBUCKET_PASSWORD'))"
