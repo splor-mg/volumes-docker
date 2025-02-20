@@ -18,6 +18,7 @@ jobs:
       - name: Update Python packages
         run: |
           uv pip compile requirements.in > requirements.txt
+          git commit -am "Update requirements.txt" || true
       - name: Install R
         uses: r-lib/actions/setup-r@v2
       - name: Versões dos pacotes R
@@ -31,7 +32,7 @@ jobs:
           Rscript -e "options(renv.config.bitbucket.password = Sys.getenv('BITBUCKET_PASSWORD'))"
           Rscript -e 'renv::install()'
           Rscript -e 'installed.packages()[, c("Package", "Version")]' > requirements_R.txt
-          
+          git commit -am "Update requirements_R.txt" || true          
       - name: Get changed files
         id: changes
         uses: tj-actions/changed-files@v35
@@ -45,8 +46,4 @@ jobs:
         if: steps.changes.outputs.any_changed == 'true'
         run: |
           docker buildx build --tag volumes:ploa2025 --secret id=secret,src=.env --build-arg relatorios_version=v0.7.64 --build-arg execucao_version=v0.5.22 --build-arg reest_version=v0.2.6 .
-          git add requirements.txt
-          git commit -m "Update requirements.txt" || true
-          git add requirements_R.txt
-          git commit -m "Update requirements_R.txt" || true
           git push origin main
