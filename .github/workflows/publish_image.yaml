@@ -21,6 +21,8 @@ jobs:
           git commit -am "Update requirements.txt" || true
       - name: Install R
         uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '3.6.3'
       - name: Versões dos pacotes R
         env:
           BITBUCKET_USER: ${{ secrets.BITBUCKET_USER }}
