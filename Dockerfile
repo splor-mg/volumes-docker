@@ -38,6 +38,9 @@ RUN Rscript -e "install.packages('renv', repos='https://cloud.r-project.org')"
 RUN Rscript -e "options(renv.config.bitbucket.host = 'https://bitbucket.org')"
 RUN Rscript -e "options(renv.config.bitbucket.auth_user = Sys.getenv('BITBUCKET_USER'))"
 RUN Rscript -e "options(renv.config.bitbucket.password = Sys.getenv('BITBUCKET_PASSWORD'))"
+
+COPY renv.lock .
+
 RUN Rscript -e "renv::restore()"
 
 ENTRYPOINT ["/bin/bash", "-c"]
