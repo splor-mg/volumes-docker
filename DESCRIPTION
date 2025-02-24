@@ -2,7 +2,6 @@ Package: volumes-docker
 Depends:
     R (== 3.6.3)
 Imports:
-    renv (== 0.14.0)
     dotenv,
     readxl,
     writexl (>= 3.0.0),
