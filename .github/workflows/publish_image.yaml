@@ -1,0 +1,49 @@
+name: Publish Image to Docker Hub
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  '0 0 * * 1'
+
+jobs:
+  all:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repo checkout
+        uses: actions/checkout@v4
+      - name: Configure gituser
+        uses: fregante/setup-git-user@v2
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+      - name: Update Python packages
+        run: |
+          uv pip compile requirements.in > requirements.txt
+          git commit -am "Update requirements.txt" || true
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+      - name: Versões dos pacotes R
+        env:
+          BITBUCKET_USER: ${{ secrets.BITBUCKET_USER }}
+          BITBUCKET_PASSWORD: ${{ secrets.BITBUCKET_PASSWORD }}
+        run: |
+          Rscript -e "install.packages('renv', repos='https://cloud.r-project.org')"
+          Rscript -e "options(renv.config.bitbucket.host = 'https://bitbucket.org')"
+          Rscript -e "options(renv.config.bitbucket.auth_user = Sys.getenv('BITBUCKET_USER'))"
+          Rscript -e "options(renv.config.bitbucket.password = Sys.getenv('BITBUCKET_PASSWORD'))"
+          Rscript -e 'renv::install()'
+          Rscript -e 'installed.packages()[, c("Package", "Version")]' > requirements_R.txt
+          git commit -am "Update requirements_R.txt" || true          
+      - name: Get changed files
+        id: changes
+        uses: tj-actions/changed-files@v35
+        with:
+          files: "**.txt"
+      - name: Create secret file from user and password
+        run: |
+          echo "BITBUCKET_USER=${{ secrets.BITBUCKET_USER }}" > .env
+          echo "BITBUCKET_PASSWORD=${{ secrets.BITBUCKET_PASSWORD }}" >> .env
+      - name: Create volumes-docker's image
+        if: steps.changes.outputs.any_changed == 'true'
+        run: |
+          docker buildx build --tag volumes:ploa2025 --secret id=secret,src=.env --build-arg relatorios_version=v0.7.64 --build-arg execucao_version=v0.5.22 --build-arg reest_version=v0.2.6 .
+          git push origin main
