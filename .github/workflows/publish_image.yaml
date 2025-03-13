@@ -32,7 +32,6 @@ jobs:
           Rscript -e "options(renv.config.bitbucket.host = 'https://bitbucket.org')"
           Rscript -e "options(renv.config.bitbucket.auth_user = Sys.getenv('BITBUCKET_USER'))"
           Rscript -e "options(renv.config.bitbucket.password = Sys.getenv('BITBUCKET_PASSWORD'))"
-          Rscript -e "renv::settings$ignored.packages('readxl')"
           Rscript -e "renv::snapshot(prompt = FALSE)"
           Rscript -e "renv::restore(prompt = FALSE)"
           Rscript -e "renv::install(prompt = FALSE)"
