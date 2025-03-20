@@ -42,12 +42,26 @@ jobs:
           files: |
             requirements.txt
             renv.lock
-      - name: Create secret file from user and password
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        env:
+          DOCKER_BUILDKIT: 1
+          BITBUCKET_USER: ${{ secrets.BITBUCKET_USER }}
+          BITBUCKET_PASSWORD: ${{ secrets.BITBUCKET_PASSWORD }}
+        with:
+          context: .
+          push: true
+          tags: splormg/${{ github.event.repository.name }}:latest
+          cache-from: type=registry,ref=splormg/${{ github.event.repository.name }}:latest
+          cache-to: type=inline
+          secrets: |
+            id=bitbucket_user,env=BITBUCKET_USER
+            id=bitbucket_password,env=BITBUCKET_PASSWORD
+      - name: Push files to repo
         run: |
-          echo "BITBUCKET_USER=${{ secrets.BITBUCKET_USER }}" > .env
-          echo "BITBUCKET_PASSWORD=${{ secrets.BITBUCKET_PASSWORD }}" >> .env
-      - name: Create volumes-docker's image
-        if: steps.changes.outputs.any_changed == 'true'
-        run: |
-          docker buildx build --tag volumes:ploa2025 --secret id=secret,src=.env .
           git push origin 26_actions_dockerimage

@@ -31,16 +31,19 @@ RUN texhash
 RUN sed -i 's/\\RequirePackage{ae}/\\RequirePackage{helvet}\n  \\renewcommand{\\familydefault}{\\sfdefault}/g' /usr/local/lib/R/share/texmf/tex/latex/Sweave.sty # remover pacote ae. vide splor-mg/volumes-docker#5
 
 COPY requirements.txt .
+COPY renv.lock .
 
 RUN python3 -m pip install -r requirements.txt
 
-RUN Rscript -e "install.packages('renv', repos='https://cloud.r-project.org')"
-RUN Rscript -e "options(renv.config.bitbucket.host = 'https://bitbucket.org')"
-RUN Rscript -e "options(renv.config.bitbucket.auth_user = Sys.getenv('BITBUCKET_USER'))"
-RUN Rscript -e "options(renv.config.bitbucket.password = Sys.getenv('BITBUCKET_PASSWORD'))"
-
-COPY renv.lock .
-
-RUN Rscript -e "renv::restore()"
+# Example: install `renv` or other needed packages
+RUN Rscript -e "install.packages('renv', repos = 'https://cloud.r-project.org')"
+# Use BuildKit secrets for user/password during build
+RUN --mount=type=secret,id=bitbucket_user \
+    --mount=type=secret,id=bitbucket_password \
+    export BITBUCKET_USER="$(cat /run/secrets/bitbucket_user)" \
+    && export BITBUCKET_PASSWORD="$(cat /run/secrets/bitbucket_password)" \
+    && Rscript -e "options(envr.config.bitbucket.auth_user = Sys.getenv('BITBUCKET_USER'))" \
+               -e "options(envr.config.bitbucket.password = Sys.getenv('BITBUCKET_PASSWORD'))" \
+               -e "renv::restore()"
 
 ENTRYPOINT ["/bin/bash", "-c"]
