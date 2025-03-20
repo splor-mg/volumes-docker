@@ -40,10 +40,8 @@ RUN Rscript -e "install.packages('renv', repos = 'https://cloud.r-project.org')"
 # Use BuildKit secrets for user/password during build
 RUN --mount=type=secret,id=bitbucket_user \
     --mount=type=secret,id=bitbucket_password \
-    export BITBUCKET_USER="$(cat /run/secrets/bitbucket_user)" \
-    && export BITBUCKET_PASSWORD="$(cat /run/secrets/bitbucket_password)" \
-    && Rscript -e "options(envr.config.bitbucket.auth_user = Sys.getenv('BITBUCKET_USER'))" \
-               -e "options(envr.config.bitbucket.password = Sys.getenv('BITBUCKET_PASSWORD'))" \
-               -e "renv::restore()"
+    Rscript -e "options(renv.config.bitbucket.auth_user = readLines('/run/secrets/bitbucket_user')[1])" \
+            -e "options(renv.config.bitbucket.password = readLines('/run/secrets/bitbucket_password')[1])" \
+            -e "renv::restore()"
 
 ENTRYPOINT ["/bin/bash", "-c"]
