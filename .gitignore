@@ -1,1 +1,6 @@
 .env
+
+# Windows system files
+desktop.ini
+Thumbs.db
+*.lnk

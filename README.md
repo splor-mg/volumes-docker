@@ -5,7 +5,7 @@
 Inicialmente é necessário criar um arquivo `.env` com seu usuário e [app password](https://support.atlassian.com/bitbucket-cloud/docs/app-passwords/) do bitbucket. Para criar o arquivo `.env` execute:
 
 ```
-cp .env.example .env
+cp env.example .env
 ```
 
 Abra o arquivo `.env` e preencha as informações solicitados de acordo com o template. 
@@ -34,9 +34,9 @@ O valor do argumento `volume` vai ser utilizado para taguear a imagem.
 
 Para publicar a imagem no Dockerhub é necessário criar uma [conta](https://hub.docker.com/signup/) e um repositório no [Docker Hub](https://docs.docker.com/docker-hub/repos/#creating-a-repository). 
 
-Como exemplo, para publicar para o repositório [`splormg/volumes`](https://hub.docker.com/repository/docker/splormg/volumes/), depois de fazer login via Docker Desktop execute
+Como exemplo, para publicar para o repositório [`aidsplormg/volumes`](https://hub.docker.com/repository/docker/aidsplormg/volumes/), depois de fazer login via Docker Desktop execute
 
 ```bash
-docker tag volumes:ploa2025 splormg/volumes:ploa2025
-docker push splormg/volumes:ploa2025
+docker tag volumes:ploa2025 aidsplormg/volumes:ploa2025
+docker push aidsplormg/volumes:ploa2025
 ```
