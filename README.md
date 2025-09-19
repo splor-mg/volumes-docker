@@ -5,7 +5,7 @@
 Inicialmente é necessário criar um arquivo `.env` com seu usuário e [app password](https://support.atlassian.com/bitbucket-cloud/docs/app-passwords/) do bitbucket. Para criar o arquivo `.env` execute:
 
 ```
-cp env.example .env
+cp .env.example .env
 ```
 
 Abra o arquivo `.env` e preencha as informações solicitados de acordo com o template. 
@@ -25,7 +25,7 @@ Utilizar o `uv` é importante para que o arquivo `requirements.txt` possua a com
 Para construir a imagem a partir do `Dockerfile` execute
 
 ```bash
-make image=ploa2025 relatorios=v0.7.64 execucao=v0.5.22 reest=v0.2.6
+make image=ploa205 relatorios=v0.7.64 execucao=v0.5.22 reest=v0.2.6
 ```
 
 O valor do argumento `volume` vai ser utilizado para taguear a imagem.
