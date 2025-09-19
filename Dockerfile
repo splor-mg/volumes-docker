@@ -1,4 +1,4 @@
-FROM rocker/verse:3.6.3
+FROM rocker/verse:4.3.0
 ARG relatorios_version
 ARG execucao_version
 ARG reest_version
@@ -7,13 +7,7 @@ WORKDIR /home/rstudio
 RUN export DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
 
-RUN apt-get install -y build-essential libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev
-RUN wget https://www.python.org/ftp/python/3.11.5/Python-3.11.5.tgz -O /tmp/python.tgz && \
-    tar -xzf /tmp/python.tgz -C /tmp && \
-    cd /tmp/Python-3.11.5 && \
-    ./configure --enable-optimizations && \
-    make altinstall && \
-    ln -s /usr/local/bin/python3.11 /usr/local/bin/python3
+RUN apt-get install -y build-essential libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev python3 python3-pip
 
 RUN apt-get install -y libpoppler-glib-dev poppler-utils libwxgtk3.0-gtk3-dev
 RUN wget https://github.com/vslavik/diff-pdf/releases/download/v0.5.1/diff-pdf-0.5.1.tar.gz -O /tmp/diff-pdf.tar.gz && \
@@ -32,20 +26,20 @@ RUN sed -i 's/\\RequirePackage{ae}/\\RequirePackage{helvet}\n  \\renewcommand{\\
 
 COPY requirements.txt .
 
-RUN python3 -m pip install -r requirements.txt
+RUN python3 -m pip install --upgrade pip && \
+    python3 -m pip install numpy==2.2.6 && \
+    grep -v "^numpy==" requirements.txt > requirements_temp.txt && \
+    python3 -m pip install -r requirements_temp.txt --no-deps
 
-RUN Rscript -e "install.packages('dotenv', repos = 'https://packagemanager.posit.co/cran/2020-04-24/')"
-RUN Rscript -e "install.packages('writexl', repos = 'https://packagemanager.posit.co/cran/2020-04-24/')"
-RUN Rscript -e "install.packages('here', repos = 'https://packagemanager.posit.co/cran/2020-04-24/')"
-RUN Rscript -e "install.packages('futile.logger', repos = 'https://packagemanager.posit.co/cran/2020-04-24/')"
-
-RUN --mount=type=secret,id=secret Rscript -e \
-    "dotenv::load_dot_env('/run/secrets/secret'); remotes::install_bitbucket('dcgf/relatorios@$relatorios_version', auth_user = Sys.getenv('BITBUCKET_AUTH_USER'), password = Sys.getenv('BITBUCKET_APP_PASSWORD'))"
+RUN Rscript -e "install.packages(c('dotenv', 'writexl', 'here', 'futile.logger'), repos = 'https://packagemanager.posit.co/cran/__linux__/jammy/latest')"
 
 RUN --mount=type=secret,id=secret Rscript -e \
-    "dotenv::load_dot_env('/run/secrets/secret'); remotes::install_bitbucket('dcgf/execucao@$execucao_version', auth_user = Sys.getenv('BITBUCKET_AUTH_USER'), password = Sys.getenv('BITBUCKET_APP_PASSWORD'))"
+    "dotenv::load_dot_env('/run/secrets/secret'); remotes::install_github('splor-mg/relatorios@$relatorios_version', auth_token = Sys.getenv('GITHUB_TOKEN'))"
 
 RUN --mount=type=secret,id=secret Rscript -e \
-    "dotenv::load_dot_env('/run/secrets/secret'); remotes::install_bitbucket('dcgf/reest@$reest_version', auth_user = Sys.getenv('BITBUCKET_AUTH_USER'), password = Sys.getenv('BITBUCKET_APP_PASSWORD'))"
+    "dotenv::load_dot_env('/run/secrets/secret'); remotes::install_github('splor-mg/execucao@$execucao_version', auth_token = Sys.getenv('GITHUB_TOKEN'))"
+
+RUN --mount=type=secret,id=secret Rscript -e \
+    "dotenv::load_dot_env('/run/secrets/secret'); remotes::install_github('splor-mg/reest@$reest_version', auth_token = Sys.getenv('GITHUB_TOKEN'))"
 
 ENTRYPOINT ["/bin/bash", "-c"]
