@@ -10,6 +10,30 @@ cp .env.example .env
 
 Abra o arquivo `.env` e preencha as informações solicitados de acordo com o template. 
 
+**Importante**: Ao lidar com a DCAF, atualize as versões dos pacotes R (`relatorios`, `execucao`, `reest`) no arquivo `config.mk` nas variáveis correspondentes.
+
+## Configuração
+
+Para atualizar/configurar os parâmetros do projeto (ano da LOA, versões dos pacotes R, etc.) de forma interativa:
+
+```bash
+make config
+```
+
+Este comando permite:
+- Configurar o ano da LOA
+- Definir a tag da imagem Docker
+- Atualizar versões dos pacotes R
+- Fazer commit das alterações automaticamente
+
+Para apenas fazer commit das configurações atuais do `config.mk`:
+
+```bash
+make config-ci
+```
+
+Este comando é útil quando as configurações já estão corretas e você só precisa versionar as alterações. 
+
 ## Dependências python
 
 Caso necessário faça a atualização das versões das dependências python com:
@@ -25,10 +49,10 @@ Utilizar o `uv` é importante para que o arquivo `requirements.txt` possua a com
 Para construir a imagem a partir do `Dockerfile` execute
 
 ```bash
-make image=ploa205 relatorios=v0.7.64 execucao=v0.5.22 reest=v0.2.6
+make build
 ```
 
-O valor do argumento `volume` vai ser utilizado para taguear a imagem.
+As configurações da imagem Docker e versões dos pacotes R são definidas no arquivo `config.mk`. O arquivo `.env` deve conter apenas o token do GitHub.
 
 ## Publicação da imagem no Dockerhub
 
@@ -37,6 +61,13 @@ Para publicar a imagem no Dockerhub é necessário criar uma [conta](https://hub
 Como exemplo, para publicar para o repositório [`aidsplormg/volumes`](https://hub.docker.com/repository/docker/aidsplormg/volumes/), depois de fazer login via Docker Desktop execute
 
 ```bash
-docker tag volumes:ploa2025 aidsplormg/volumes:ploa2025
-docker push aidsplormg/volumes:ploa2025
+make push-image
 ```
+
+Ou também:
+
+```bash
+docker tag volumes:ploaAAAA aidsplormg/volumes:ploaAAAA
+docker push aidsplormg/volumes:ploaAAAA
+```
+
