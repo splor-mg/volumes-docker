@@ -3,4 +3,4 @@ frictionless[excel,html]
 pandas[excel,html]
 tomli
 git+https://github.com/splor-mg/dpm.git@main
-?
+typer
