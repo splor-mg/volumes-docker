@@ -1,27 +1,50 @@
-# config.mk - Configurações do projeto volumes-docker
+# =============================================================================
+# CONFIGURAÇÕES DO PROJETO VOLUMES-DOCKER
+# =============================================================================
+# ATENÇÃO: Este arquivo é gerado automaticamente pelo comando 'make config'
+# NÃO edite este arquivo manualmente - use 'make config' para modificá-lo
 # Este arquivo deve ser versionado e atualizado a cada nova versão
+# Última atualização: 2024-12-19
+# =============================================================================
 
+# =============================================================================
+# CONFIGURAÇÕES GERAIS
+# =============================================================================
 # Ano da LOA (Lei Orçamentária Anual)
 # Exemplo: 2025 -> para LOA que entrará em vigor em 2025
 ANO_LOA=2025
 
+# =============================================================================
+# CONFIGURAÇÕES DOCKER
+# =============================================================================
 # Tag da imagem Docker (versão)
-DOCKER_TAG=ploa2025 # ex.1.: ploa2025 ex.2.: ploa2025.1 
+# Formato: ploa{ANO} ou ploa{ANO}.{PATCH}
+# Exemplos: ploa2025, ploa2025.1, ploa2025.2
+DOCKER_TAG=ploa2025
 
-# Usuário do Docker Hub (por padrão: aidsplormg, https://hub.docker.com/u/aidsplormg)
+# Usuário do Docker Hub
+# Repositório: https://hub.docker.com/u/aidsplormg
 DOCKER_USER=aidsplormg
 
-# Nome da imagem Docker (por padrão: volumes, https://hub.docker.com/r/aidsplormg/volumes)
+# Nome da imagem Docker
+# Imagem completa: aidsplormg/volumes
 DOCKER_IMAGE=volumes
 
-# Versões dos pacotes R
-RELATORIOS_VERSION=v0.7.99 # ex.: v0.7.64
-EXECUCAO_VERSION=v0.5.27 # ex.: v0.5.22
-REEST_VERSION=v0.2.8 # ex.: v0.2.6
+# =============================================================================
+# VERSÕES DOS PACOTES R
+# =============================================================================
+# Relatórios - Pacote principal para geração de relatórios
+# Formato: v{Major}.{Minor}.{Patch}
+# Exemplos: v0.7.99, v0.7.100
+RELATORIOS_VERSION=v0.7.99
 
-# Histórico de versões (para referência)
-# LOA 2024:
-# DOCKER_TAG=ploa2024
-# RELATORIOS_VERSION=v0.6.39
-# EXECUCAO_VERSION=v0.5.7
-# REEST_VERSION=v0.2.5
+# Execução - Pacote para execução de processos
+# Formato: v{Major}.{Minor}.{Patch}
+# Exemplos: v0.5.27, v0.5.28
+EXECUCAO_VERSION=v0.5.27
+
+# Reestruturação - Pacote para reestruturação de dados
+# Formato: v{Major}.{Minor}.{Patch}
+# Exemplos: v0.2.8, v0.2.9
+REEST_VERSION=v0.2.8
+

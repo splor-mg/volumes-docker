@@ -22,5 +22,5 @@ push-image: build ## Faz build, tag e push da imagem para o Docker Hub
 config: ## Configura interativamente as variáveis do config.mk
 	python3 scripts/config.py
 
-config-ci: ## Executa apenas a parte de commit (usa configurações atuais)
+config-ci: ## Executa apenas a parte de commit para as alterações no config.mk
 	python3 scripts/config.py --commit-only
