@@ -6,8 +6,8 @@ ARG reest_version
 WORKDIR /home/rstudio
 
 # Use archive.debian.org para repositórios antigos do Buster
-RUN sed -i 's|deb.debian.org|archive.debian.org|g' /etc/apt/sources.list && \
-    sed -i 's|security.debian.org|archive.debian.org|g' /etc/apt/sources.list && \
+RUN sed -i 's|http://deb.debian.org|https://archive.debian.org|g' /etc/apt/sources.list && \
+    sed -i 's|http://security.debian.org|https://archive.debian.org|g' /etc/apt/sources.list && \
     sed -i '/buster-updates/d' /etc/apt/sources.list
 
 # Definir variável para evitar prompts do apt
@@ -72,6 +72,6 @@ RUN --mount=type=secret,id=secret Rscript -e \
     "dotenv::load_dot_env('/run/secrets/secret'); remotes::install_github('splor-mg/execucao@$execucao_version', auth_token = Sys.getenv('GITHUB_PAT'))"
 
 RUN --mount=type=secret,id=secret Rscript -e \
-    "dotenv::load_dot_env('/run/secrets/secret'); remotes::install_bitbucket('dcgf/reest@$reest_version', auth_user = Sys.getenv('BITBUCKET_AUTH_USER'), password = Sys.getenv('BITBUCKET_APP_PASSWORD'))"
+    "dotenv::load_dot_env('/run/secrets/secret'); remotes::install_github('splor-mg/reest@$reest_version', auth_token = Sys.getenv('GITHUB_PAT'))"
 
 ENTRYPOINT ["/bin/bash", "-c"]
