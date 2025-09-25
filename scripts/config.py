@@ -98,28 +98,40 @@ def validate_git_status():
         )
         
         if result.stdout.strip():
-            print(f"\n{Colors.RED}❌ Erro: Há mudanças não commitadas no repositório{Colors.END}")
-            print(f"{Colors.YELLOW}📋 Mudanças encontradas:{Colors.END}")
+            print(f"\n{Colors.YELLOW}⚠️  Atenção: Existem alterações não commitadas neste repositório{Colors.END}")
+            print(f"{Colors.BLUE}Para prosseguir com a configuração, você precisa primeiro resolver essas alterações.{Colors.END}")
+            print(f"\n{Colors.YELLOW}📋 Arquivos modificados:{Colors.END}")
             
             # Mostra as mudanças de forma organizada
             for line in result.stdout.strip().split('\n'):
-                status = line[:2]
-                file = line[3:]
-                if status.startswith('M'):
-                    print(f"  📝 Modificado: {file}")
-                elif status.startswith('A'):
-                    print(f"  ➕ Adicionado: {file}")
-                elif status.startswith('D'):
-                    print(f"  🗑️  Removido: {file}")
-                elif status.startswith('?'):
-                    print(f"  ❓ Não rastreado: {file}")
+                if len(line) < 3:
+                    continue
+                
+                # Extrai status e arquivo corretamente
+                if line.startswith(' M'):  # Modificado no working directory
+                    file = line[3:].strip()
+                    print(f"  📝 {file}")
+                elif line.startswith('M '):  # Modificado no staging
+                    file = line[2:].strip()
+                    print(f"  📝 {file}")
+                elif line.startswith('A '):  # Adicionado
+                    file = line[2:].strip()
+                    print(f"  ➕ {file}")
+                elif line.startswith('D '):  # Deletado
+                    file = line[2:].strip()
+                    print(f"  🗑️  {file}")
+                elif line.startswith('??'):  # Não rastreado
+                    file = line[2:].strip()
+                    print(f"  ❓ {file}")
                 else:
-                    print(f"  🔄 {status}: {file}")
+                    # Para outros casos, tenta extrair a partir da posição 3
+                    file = line[3:].strip()
+                    print(f"  🔄 {file}")
             
-            print(f"\n{Colors.BLUE}💡 Para resolver, execute um dos comandos:{Colors.END}")
-            print(f"  {Colors.GREEN}git add . && git commit -m 'Sua mensagem'{Colors.END}")
-            print(f"  {Colors.GREEN}git stash{Colors.END}")
-            print(f"  {Colors.GREEN}git checkout -- <arquivo>{Colors.END}")
+            print(f"\n{Colors.BLUE}💡 Opções disponíveis:{Colors.END}")
+            print(f"  {Colors.GREEN}• Fazer commit: git add . && git commit -m 'Sua mensagem'{Colors.END}")
+            print(f"  {Colors.GREEN}• Descartar alterações: git checkout -- <arquivo>{Colors.END}")
+            print(f"  {Colors.GREEN}• Salvar temporariamente: git stash{Colors.END}")
             print(f"\n{Colors.YELLOW}Depois execute 'make config' novamente.{Colors.END}")
             return False
         
