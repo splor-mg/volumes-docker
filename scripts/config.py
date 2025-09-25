@@ -318,10 +318,6 @@ def show_commit_preview(commit_message):
 def make_commit(commit_message):
     """Executa o commit com validações"""
     try:
-        # Validações pré-commit
-        if not validate_git_status():
-            return False
-        
         # Git add
         print(f"{Colors.BLUE}Adicionando config.mk ao staging...{Colors.END}")
         subprocess.run(['git', 'add', 'config.mk'], check=True)
