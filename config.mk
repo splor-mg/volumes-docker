@@ -4,7 +4,7 @@
 # ATENÇÃO: Este arquivo é gerado automaticamente pelo comando 'make config'
 # NÃO edite este arquivo manualmente - use 'make config' para modificá-lo
 # Este arquivo deve ser versionado e atualizado a cada nova versão
-# Última atualização: 2024-12-19
+# Última atualização: 2025-09-25 (commit: 46c8cba)
 # =============================================================================
 
 # =============================================================================
@@ -12,7 +12,7 @@
 # =============================================================================
 # Ano da LOA (Lei Orçamentária Anual)
 # Exemplo: 2025 -> para LOA que entrará em vigor em 2025
-ANO_LOA=2025
+ANO_LOA=2026
 
 # =============================================================================
 # CONFIGURAÇÕES DOCKER
@@ -20,7 +20,7 @@ ANO_LOA=2025
 # Tag da imagem Docker (versão)
 # Formato: ploa{ANO} ou ploa{ANO}.{PATCH}
 # Exemplos: ploa2025, ploa2025.1, ploa2025.2
-DOCKER_TAG=ploa2025
+DOCKER_TAG=ploa2026
 
 # Usuário do Docker Hub
 # Repositório: https://hub.docker.com/u/aidsplormg
