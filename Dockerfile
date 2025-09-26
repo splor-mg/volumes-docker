@@ -24,8 +24,20 @@ RUN apt-get install -y build-essential libncursesw5-dev libssl-dev libsqlite3-de
 
 RUN apt-get install -y libpoppler-glib-dev poppler-utils libwxgtk3.0-gtk3-dev
 
-# Instala LaTeX completo e pacotes necessários
-RUN apt-get install -y texlive-full texlive-latex-extra texlive-fonts-recommended
+# Aceita a licença automaticamente
+RUN echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections
+
+# Instala LaTeX completo e pacotes necessários + fonts
+RUN apt-get update && apt-get install -y \
+    build-essential libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev \
+    libbz2-dev libffi-dev zlib1g-dev python3 python3-pip \
+    libpoppler-glib-dev poppler-utils libwxgtk3.0-gtk3-dev \
+    texlive-full texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra \
+    ttf-mscorefonts-installer fonts-liberation
+
+# Instalar pacotes LaTeX específicos para fontes Arial/UArial
+RUN apt-get install -y texlive-fonts-extra texlive-fonts-recommended texlive-latex-extra
+RUN texhash && updmap-sys --enable Map=pdftex.map
 
 RUN wget https://github.com/vslavik/diff-pdf/releases/download/v0.5.1/diff-pdf-0.5.1.tar.gz -O /tmp/diff-pdf.tar.gz && \
     tar -xzf /tmp/diff-pdf.tar.gz -C /tmp && \
@@ -44,12 +56,18 @@ RUN texhash && \
     updmap-sys --enable Map=pdftex.map
 RUN sed -i 's/\\RequirePackage{ae}/\\RequirePackage{helvet}\n  \\renewcommand{\\familydefault}{\\sfdefault}/g' /usr/local/lib/R/share/texmf/tex/latex/Sweave.sty # remover pacote ae. vide splor-mg/volumes-docker#5
 
-COPY requirements.txt .
-
+# Instalar Poetry
 RUN python3 -m pip install --upgrade pip && \
-    python3 -m pip install numpy==2.2.6 && \
-    grep -v "^numpy==" requirements.txt > requirements_temp.txt && \
-    python3 -m pip install -r requirements_temp.txt --no-deps
+    python3 -m pip install poetry
+
+# Copiar arquivos de configuração do Poetry
+COPY pyproject.toml poetry.lock ./
+
+# Configurar Poetry para não criar ambiente virtual
+RUN poetry config virtualenvs.create false
+
+# Instalar dependências com Poetry
+RUN poetry install --only=main --no-interaction --no-root
 
 RUN Rscript -e "install.packages(c('dotenv', 'writexl', 'here', 'futile.logger'), repos = 'https://packagemanager.posit.co/cran/__linux__/jammy/latest')"
 

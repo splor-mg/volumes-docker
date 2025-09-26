@@ -34,17 +34,14 @@ DOCKER_IMAGE=volumes
 # VERSÕES DOS PACOTES R
 # =============================================================================
 # Relatórios - Pacote principal para geração de relatórios
-# Formato: v{Major}.{Minor}.{Patch}
 # Exemplos: v0.7.99, v0.7.100
 RELATORIOS_VERSION=v0.7.99
 
 # Execução - Pacote para execução de processos
-# Formato: v{Major}.{Minor}.{Patch}
 # Exemplos: v0.5.27, v0.5.28
 EXECUCAO_VERSION=v0.5.27
 
 # Reestruturação - Pacote para reestruturação de dados
-# Formato: v{Major}.{Minor}.{Patch}
 # Exemplos: v0.2.8, v0.2.9
 REEST_VERSION=v0.2.8
 

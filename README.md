@@ -34,15 +34,27 @@ make config-ci
 
 Este comando é útil quando as configurações já estão corretas e você só precisa versionar as alterações. 
 
-## Dependências python
+## Dependências Python
 
-Caso necessário faça a atualização das versões das dependências python com:
+Este projeto usa [Poetry](https://python-poetry.org/) para gerenciamento de dependências. Para instalar as dependências:
 
 ```bash
-uv pip compile requirements.in > requirements.txt
+make install
 ```
 
-Utilizar o `uv` é importante para que o arquivo `requirements.txt` possua a commit sha do pacote `dpm` que será instalado na imagem.
+Para adicionar uma nova dependência:
+
+```bash
+poetry add <nome-do-pacote>
+```
+
+Para dependências de desenvolvimento:
+
+```bash
+poetry add --group dev <nome-do-pacote>
+```
+
+O arquivo `requirements.in` é mantido apenas como referência histórica. As dependências ativas estão definidas no `pyproject.toml`.
 
 ## Construção da imagem
 
@@ -64,10 +76,49 @@ Como exemplo, para publicar para o repositório [`aidsplormg/volumes`](https://h
 make push-image
 ```
 
-Ou também:
+Para construir e publicar em uma única operação:
 
 ```bash
-docker tag volumes:ploaAAAA aidsplormg/volumes:ploaAAAA
-docker push aidsplormg/volumes:ploaAAAA
+make build-and-push
 ```
+
+## Validação
+
+Antes de construir a imagem, você pode validar a configuração:
+
+```bash
+poetry run validate-config
+```
+
+E verificar se o Docker está configurado corretamente:
+
+```bash
+validate-docker
+```
+
+## Comandos disponíveis
+
+Atualmente o projeto está em transição do Makefile para Poetry. O Makefile serve como uma camada de transição, onde os comandos `make` são aliases para os comandos Poetry correspondentes.
+
+### Comandos via Make (aliases)
+
+- `make config` - Alias para `poetry run config`
+- `make config-ci` - Alias para `poetry run config-ci`
+- `make build` - Alias para `poetry run build`
+- `make push-image` - Alias para `poetry run push`
+- `make build-and-push` - Alias para `poetry run build-and-push`
+- `make validate-docker` - Alias para `poetry run validate-docker`
+- `make validate-config` - Alias para `poetry run validate-config`
+
+### Comandos diretos via Poetry
+
+Todos os comandos também podem ser executados diretamente via Poetry:
+
+- `poetry run config` - Configuração interativa
+- `poetry run config-ci` - Commit das configurações atuais
+- `poetry run build` - Construir imagem Docker
+- `poetry run push` - Publicar imagem no Docker Hub
+- `poetry run build-and-push` - Construir e publicar
+- `poetry run validate-docker` - Validar instalação Docker
+- `poetry run validate-config` - Validar configurações
 

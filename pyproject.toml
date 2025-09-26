@@ -1,0 +1,60 @@
+[tool.poetry]
+name = "volumes-docker"
+version = "0.1.0"
+description = "Sistema de build e configuração de imagens Docker para volumes da LOA"
+authors = ["Splor MG <contato@splor.mg>"]
+readme = "README.md"
+packages = [{include = "scripts"}]
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+pytest = "^7.0.0"
+frictionless = {extras = ["excel", "html"], version = "^4.0.0"}
+pandas = {extras = ["excel", "html"], version = "^2.0.0"}
+tomli = "^2.0.0"
+typer = "^0.9.0"
+pyyaml = "^6.0.0"
+dpm = {git = "https://github.com/splor-mg/dpm.git", branch = "main"}
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.0.0"
+flake8 = "^6.0.0"
+mypy = "^1.0.0"
+
+[tool.poetry.scripts]
+# Scripts de configuração
+config = "scripts.config:main"
+config-ci = "scripts.config:main --commit-only"
+
+# Scripts de build e push
+build = "scripts.docker_build:main"
+push = "scripts.docker_push:main"
+build-and-push = "scripts.docker_build_push:main"
+
+# Scripts de validação
+validate-config = "scripts.validate_config:main"
+validate-docker = "scripts.validate_docker:main"
+
+# Scripts de gerenciamento de dependências
+generate-requirements = "scripts.generate_requirements:main"
+
+[tool.poetry.group.docker.dependencies]
+docker = "^6.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true

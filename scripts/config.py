@@ -137,13 +137,7 @@ def validate_git_status():
         
         # Verifica se está na branch main/master
         branch_info = get_git_info()
-        if branch_info['branch'] not in ['main', 'master']:
-            print(f"\n{Colors.YELLOW}⚠️  Aviso: Você está na branch '{branch_info['branch']}'{Colors.END}")
-            print(f"{Colors.BLUE}💡 Recomendado: Use a branch 'main' ou 'master' para configurações{Colors.END}")
-            confirm = input(f"\n{Colors.YELLOW}Continuar mesmo assim? (y/N): {Colors.END}").strip().lower()
-            if confirm not in ['y', 'yes', 's', 'sim']:
-                print(f"{Colors.BLUE}💡 Para mudar de branch: git checkout main{Colors.END}")
-                return False
+        # Removido aviso sobre branch - permite trabalhar em qualquer branch
         
         return True
         
