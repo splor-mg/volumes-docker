@@ -25,7 +25,7 @@ Utilizar o `uv` é importante para que o arquivo `requirements.txt` possua a com
 Para construir a imagem a partir do `Dockerfile` execute
 
 ```bash
-make image=ploa2025 relatorios=v0.7.99 execucao=v0.5.27 reest=v0.2.6
+make image=ploa2026.1 relatorios=v0.7.99 execucao=v0.5.27 reest=v0.2.6
 ```
 
 O valor do argumento `volume` vai ser utilizado para taguear a imagem.
