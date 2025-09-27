@@ -9,10 +9,10 @@ packages = [{include = "scripts"}]
 [tool.poetry.dependencies]
 python = "^3.8.1"
 pytest = "^7.0.0"
-frictionless = {extras = ["excel", "html"], version = "^4.0.0"}
+frictionless = {extras = ["excel", "html"], version = "^5.0.0"}
 pandas = {extras = ["excel", "html"], version = "^2.0.0"}
 tomli = "^2.0.0"
-typer = "^0.9.0"
+typer = "^0.12.0"
 pyyaml = "^6.0.0"
 dpm = {git = "https://github.com/splor-mg/dpm.git", branch = "main"}
 docker = "^6.0.0"
