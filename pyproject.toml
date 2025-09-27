@@ -15,6 +15,7 @@ tomli = "^2.0.0"
 typer = "^0.9.0"
 pyyaml = "^6.0.0"
 dpm = {git = "https://github.com/splor-mg/dpm.git", branch = "main"}
+docker = "^6.0.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.0.0"
@@ -35,11 +36,6 @@ build-and-push = "scripts.docker_build_push:main"
 validate-config = "scripts.validate_config:main"
 validate-docker = "scripts.validate_docker:main"
 
-# Scripts de gerenciamento de dependências
-generate-requirements = "scripts.generate_requirements:main"
-
-[tool.poetry.group.docker.dependencies]
-docker = "^6.0.0"
 
 [build-system]
 requires = ["poetry-core"]
