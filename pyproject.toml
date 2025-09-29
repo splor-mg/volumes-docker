@@ -32,7 +32,7 @@ config-ci = "scripts.config:main --commit-only"
 # Scripts de build e push
 build = "scripts.docker_build:main"
 push = "scripts.docker_push:main"
-build-and-push = "scripts.docker_build_push:main"
+build-push = "scripts.docker_build_push:main"
 
 # Scripts de validação
 validate-config = "scripts.validate_config:main"

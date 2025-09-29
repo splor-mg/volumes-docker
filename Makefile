@@ -23,8 +23,8 @@ validate-docker: ## Valida configuração do Docker e dependências
 validate-config: ## Valida configurações do config.mk
 	poetry run validate-config
 
-build-and-push: ## Constrói e faz push da imagem Docker
-	poetry run build-and-push
+build-push: ## Constrói e faz push da imagem Docker
+	poetry run build-push
 
 pacotes-check-version: ## Verifica e atualiza versões dos pacotes DCAF
 	poetry run pacotes-check-version || true

@@ -4,7 +4,7 @@
 # ATENÇÃO: Este arquivo é gerado automaticamente pelo comando 'make config'
 # NÃO edite este arquivo manualmente - use 'make config' para modificá-lo
 # Este arquivo deve ser versionado e atualizado a cada nova versão
-# Última atualização: 2025-09-29 08:17:30 (auto-update)
+# Última atualização: 2025-09-29 18:49:00 (auto-update)
 # =============================================================================
 
 # =============================================================================
@@ -32,7 +32,7 @@ DOCKER_IMAGE=volumes
 # VERSÕES DOS PACOTES R
 # =============================================================================
 # Relatórios - Pacote principal para geração de relatórios
-RELATORIOS_VERSION=v0.7.99
+RELATORIOS_VERSION=v0.8.00
 
 # Execução - Pacote para execução de processos
 EXECUCAO_VERSION=v0.5.27

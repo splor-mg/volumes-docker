@@ -56,8 +56,9 @@ RUN texhash && \
     updmap-sys --enable Map=pdftex.map
 RUN sed -i 's/\\RequirePackage{ae}/\\RequirePackage{helvet}\n  \\renewcommand{\\familydefault}{\\sfdefault}/g' /usr/local/lib/R/share/texmf/tex/latex/Sweave.sty # remover pacote ae. vide splor-mg/volumes-docker#5
 
-# Instalar dependências Python necessárias para volumes-loa
-RUN pip install frictionless==5.0.0 pandas==2.0.0 typer==0.12.0 pyyaml==6.0.0 markdown==3.0.0
+# Instalar dependências Python usando Poetry
+COPY pyproject.toml poetry.lock ./
+RUN pip install poetry && poetry install --no-dev
 
 RUN Rscript -e "install.packages(c('dotenv', 'writexl', 'here', 'futile.logger'), repos = 'https://packagemanager.posit.co/cran/__linux__/jammy/latest')"
 
