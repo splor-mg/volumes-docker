@@ -3,47 +3,61 @@ name: Publish Image to Docker Hub
 on:
   workflow_dispatch:
   schedule:
+    # Executa toda segunda-feira às 00:00 UTC (domingo 21:00 em Brasília, UTC-3)
     - cron:  '0 0 * * 1'
+  repository_dispatch:
+    types: [version-updated]
 
 jobs:
   all:
     runs-on: ubuntu-latest
     steps:
-      - name: Repo checkout
+      - name: Checkout repo
         uses: actions/checkout@v4
-      - name: Configure gituser
-        uses: fregante/setup-git-user@v2
-      - name: Install uv
-        uses: astral-sh/setup-uv@v4
-      - name: Update Python packages
-        run: |
-          uv pip compile requirements.in > requirements.txt
-          git commit -am "Update requirements.txt" || true
-      - name: Install R
-        uses: r-lib/actions/setup-r@v2
-      - name: Versões dos pacotes R
-        env:
-          BITBUCKET_USER: ${{ secrets.BITBUCKET_USER }}
-          BITBUCKET_PASSWORD: ${{ secrets.BITBUCKET_PASSWORD }}
-        run: |
-          Rscript -e "install.packages('renv', repos='https://cloud.r-project.org')"
-          Rscript -e "options(renv.config.bitbucket.host = 'https://bitbucket.org')"
-          Rscript -e "options(renv.config.bitbucket.auth_user = Sys.getenv('BITBUCKET_USER'))"
-          Rscript -e "options(renv.config.bitbucket.password = Sys.getenv('BITBUCKET_PASSWORD'))"
-          Rscript -e 'renv::install()'
-          Rscript -e 'installed.packages()[, c("Package", "Version")]' > requirements_R.txt
-          git commit -am "Update requirements_R.txt" || true          
-      - name: Get changed files
-        id: changes
-        uses: tj-actions/changed-files@v35
+
+      - name: Set up Python
+        id: setup-python
+        uses: actions/setup-python@v4
         with:
-          files: "**.txt"
-      - name: Create secret file from user and password
+          python-version: '3.8'
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: latest
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-ansi
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push image (via scripts)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
-          echo "BITBUCKET_USER=${{ secrets.BITBUCKET_USER }}" > .env
-          echo "BITBUCKET_PASSWORD=${{ secrets.BITBUCKET_PASSWORD }}" >> .env
-      - name: Create volumes-docker's image
-        if: steps.changes.outputs.any_changed == 'true'
-        run: |
-          docker buildx build --tag volumes:ploa2025 --secret id=secret,src=.env --build-arg relatorios_version=v0.7.64 --build-arg execucao_version=v0.5.22 --build-arg reest_version=v0.2.6 .
-          git push origin main
+          make build-and-push
+
+      - name: Trigger gerar_volumes in volumes-loa
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.GH_PAT }}
+          repository: splor-mg/volumes-loa
+          event-type: gerar-volumes
+          client-payload: '{"source": "volumes-docker", "ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'

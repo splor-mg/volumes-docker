@@ -1,0 +1,100 @@
+name: Update Package Versions
+
+on:
+  schedule:
+    # Executa segundas e quintas às 11:57 UTC
+    - cron: '57 11 * * 1,4'
+  workflow_dispatch:
+
+jobs:
+  update-versions:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Set up Python
+      id: setup-python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.8'
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: latest
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+
+    - name: Load cached venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Install dependencies
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      run: poetry install --no-interaction --no-ansi
+
+    - name: Update dependencies to latest
+      run: |
+        echo "🔄 Atualizando dependências para as versões mais recentes..."
+        poetry update
+        echo "✅ Dependências atualizadas com sucesso"
+        echo "📋 Resumo das mudanças:"
+        poetry show --outdated || echo "Todas as dependências estão atualizadas"
+
+    - name: Check package versions
+      id: check-versions
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+      run: |
+        echo "🔍 Verificando versões dos pacotes DCAF..."
+        poetry run pacotes-check-version || true
+
+    - name: Check for changes
+      id: check-changes
+      run: |
+        echo "🔍 Verificando mudanças nos arquivos..."
+        if git diff --quiet config.mk poetry.lock; then
+          echo "has_changes=false" >> $GITHUB_OUTPUT
+          echo "✅ Nenhuma mudança detectada"
+        else
+          echo "has_changes=true" >> $GITHUB_OUTPUT
+          echo "🔄 Mudanças detectadas nos arquivos:"
+          git diff --name-only
+          echo ""
+          echo "📋 Detalhes das mudanças:"
+          git diff --stat
+        fi
+
+    - name: Commit and push changes
+      if: steps.check-changes.outputs.has_changes == 'true'
+      run: |
+        echo "💾 Preparando commit das mudanças..."
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add config.mk poetry.lock
+        echo "📝 Arquivos adicionados ao commit:"
+        git diff --cached --name-only
+        echo ""
+        echo "📋 Resumo das mudanças:"
+        git diff --cached --stat
+        echo ""
+        git commit -m "chore: Auto-update dependencies and package versions $(date +'%Y-%m-%d %H:%M:%S')" || exit 0
+        echo "🚀 Enviando mudanças para o repositório..."
+        git push
+        echo "✅ Mudanças enviadas com sucesso!"
+
+    - name: Trigger publish workflow
+      if: steps.check-changes.outputs.has_changes == 'true'
+      uses: peter-evans/repository-dispatch@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        event-type: version-updated
+        client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "changes": "dependencies and package versions updated"}'
+
+

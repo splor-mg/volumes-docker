@@ -27,6 +27,7 @@ wheels/
 venv/
 env/
 ENV/
+.venv/
 
 # IDE
 .vscode/
@@ -34,6 +35,10 @@ ENV/
 *.swp
 *.swo
 *~
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
 
 # OS generated files
 .DS_Store

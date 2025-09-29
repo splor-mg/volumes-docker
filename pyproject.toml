@@ -17,6 +17,7 @@ pyyaml = "^6.0.0"
 dpm = {git = "https://github.com/splor-mg/dpm.git", branch = "main"}
 docker = "^6.0.0"
 markdown = "^3.0.0"
+requests = "^2.31.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.0.0"
@@ -36,6 +37,9 @@ build-and-push = "scripts.docker_build_push:main"
 # Scripts de validação
 validate-config = "scripts.validate_config:main"
 validate-docker = "scripts.validate_docker:main"
+
+# Verificação e atualização de versões dos pacotes DCAF
+pacotes-check-version = "scripts.pacotes_check_version:main"
 
 
 [build-system]

@@ -1,4 +1,4 @@
-.PHONY: build push config config-ci validate-docker validate-config build-and-push
+.PHONY: build push config config-ci validate-docker validate-config build-and-push pacotes-check-version
 
 include config.mk
 
@@ -25,3 +25,6 @@ validate-config: ## Valida configurações do config.mk
 
 build-and-push: ## Constrói e faz push da imagem Docker
 	poetry run build-and-push
+
+pacotes-check-version: ## Verifica e atualiza versões dos pacotes DCAF
+	poetry run pacotes-check-version || true
