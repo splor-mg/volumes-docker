@@ -25,7 +25,7 @@ Utilizar o `uv` é importante para que o arquivo `requirements.txt` possua a com
 Para construir a imagem a partir do `Dockerfile` execute
 
 ```bash
-make image=ploa2026.1 relatorios=v0.7.99 execucao=v0.5.27 reest=v0.2.6
+make image=ploa2026.2 relatorios=v0.8.00 execucao=v0.5.27 reest=v0.2.8
 ```
 
 O valor do argumento `volume` vai ser utilizado para taguear a imagem.
@@ -37,6 +37,6 @@ Para publicar a imagem no Dockerhub é necessário criar uma [conta](https://hub
 Como exemplo, para publicar para o repositório [`splormg/volumes`](https://hub.docker.com/repository/docker/splormg/volumes/), depois de fazer login via Docker Desktop execute
 
 ```bash
-docker tag volumes:ploa2025 splormg/volumes:ploa2025
-docker push splormg/volumes:ploa2025
+docker tag volumes:ploa2026.2 aidsplormg/volumes:ploa2026.2
+docker push aidsplormg/volumes:ploa2026.2
 ```
