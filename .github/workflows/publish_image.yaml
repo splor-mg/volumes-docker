@@ -3,8 +3,8 @@ name: Publish Image to Docker Hub
 on:
   workflow_dispatch:
   schedule:
-    # Executa toda segunda-feira às 00:00 UTC (domingo 21:00 em Brasília, UTC-3)
-    - cron:  '0 0 * * 1'
+    # Executa toda terça-feira às 13:57 UTC
+    - cron: '57 13 * * 2'
   repository_dispatch:
     types: [version-updated]
 

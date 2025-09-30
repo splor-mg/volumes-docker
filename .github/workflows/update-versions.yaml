@@ -2,8 +2,8 @@ name: Update Package Versions
 
 on:
   schedule:
-    # Executa segundas e quintas às 11:57 UTC
-    - cron: '57 11 * * 1,4'
+    # Executa de segunda a sexta às 13:37 UTC
+    - cron: '37 13 * * 1-5'
   workflow_dispatch:
 
 jobs:

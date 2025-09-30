@@ -56,11 +56,18 @@ RUN texhash && \
     updmap-sys --enable Map=pdftex.map
 RUN sed -i 's/\\RequirePackage{ae}/\\RequirePackage{helvet}\n  \\renewcommand{\\familydefault}{\\sfdefault}/g' /usr/local/lib/R/share/texmf/tex/latex/Sweave.sty # remover pacote ae. vide splor-mg/volumes-docker#5
 
-# Instalar dependências Python usando Poetry
-COPY pyproject.toml poetry.lock ./
-RUN pip install poetry && poetry install --no-dev
+# Dependências globais (binários no PATH, ex.: dpm)
+COPY requirements.in ./
+RUN pip install --no-cache-dir pip-tools \
+ && pip-compile --no-emit-index-url --no-strip-extras requirements.in \
+ && cat requirements.txt \
+ && pip install --no-cache-dir -r requirements.txt
 
-RUN Rscript -e "install.packages(c('dotenv', 'writexl', 'here', 'futile.logger'), repos = 'https://packagemanager.posit.co/cran/__linux__/jammy/latest')"
+# Dependências do projeto via Poetry (sem instalar o pacote raiz)
+COPY pyproject.toml poetry.lock ./
+RUN pip install --no-cache-dir poetry && poetry install --only=main --no-root
+
+RUN Rscript -e "install.packages(c('dotenv', 'writexl', 'here', 'futile.logger', 'markdown', 'rmarkdown', 'knitr'), repos = 'https://packagemanager.posit.co/cran/__linux__/jammy/latest')"
 
 RUN --mount=type=secret,id=secret Rscript -e \
     "dotenv::load_dot_env('/run/secrets/secret'); remotes::install_github('splor-mg/relatorios@$relatorios_version', auth_token = Sys.getenv('GITHUB_TOKEN'))"
