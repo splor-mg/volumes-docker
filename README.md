@@ -8,7 +8,7 @@ Inicialmente é necessário criar um arquivo `.env` com seu usuário e [app pass
 cp .env.example .env
 ```
 
-Abra o arquivo `.env` e preencha as informações solicitados de acordo com o template. 
+Abra o arquivo `.env` e preencha as informações solicitados de acordo com o template.
 
 ## Dependências python
 
@@ -25,18 +25,18 @@ Utilizar o `uv` é importante para que o arquivo `requirements.txt` possua a com
 Para construir a imagem a partir do `Dockerfile` execute
 
 ```bash
-make image=ploa2025 relatorios=v0.7.64 execucao=v0.5.22 reest=v0.2.6
+make image=ploa2026.3 relatorios=v0.8.05 execucao=v0.5.27 reest=v0.2.8
 ```
 
 O valor do argumento `volume` vai ser utilizado para taguear a imagem.
 
 ## Publicação da imagem no Dockerhub
 
-Para publicar a imagem no Dockerhub é necessário criar uma [conta](https://hub.docker.com/signup/) e um repositório no [Docker Hub](https://docs.docker.com/docker-hub/repos/#creating-a-repository). 
+Para publicar a imagem no Dockerhub é necessário criar uma [conta](https://hub.docker.com/signup/) e um repositório no [Docker Hub](https://docs.docker.com/docker-hub/repos/#creating-a-repository).
 
 Como exemplo, para publicar para o repositório [`splormg/volumes`](https://hub.docker.com/repository/docker/splormg/volumes/), depois de fazer login via Docker Desktop execute
 
 ```bash
-docker tag volumes:ploa2025 splormg/volumes:ploa2025
-docker push splormg/volumes:ploa2025
+docker tag volumes:ploa2026.3 aidsplormg/volumes:ploa2026.3
+docker push aidsplormg/volumes:ploa2026.3
 ```
