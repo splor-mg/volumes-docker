@@ -2,41 +2,72 @@
 
 ## Pré-requisitos
 
-Inicialmente é necessário criar um arquivo `.env` com seu usuário e [app password](https://support.atlassian.com/bitbucket-cloud/docs/app-passwords/) do bitbucket. Para criar o arquivo `.env` execute:
+Os segredos (token do GitHub para instalar os pacotes privados, usuário e
+[access token](https://hub.docker.com/settings/security) do Docker Hub, nome
+da imagem) são gerenciados no [Infisical](https://infisical.com/),
+não em um arquivo `.env` local. É necessário ter o [Infisical CLI](https://infisical.com/docs/cli/overview)
+instalado e autenticado (`infisical login`) para o projeto já configurado neste
+repositório (`.infisical.json`).
 
-```
-cp .env.example .env
-```
-
-Abra o arquivo `.env` e preencha as informações solicitados de acordo com o template.
-
-## Dependências python
-
-Caso necessário faça a atualização das versões das dependências python com:
-
-```bash
-uv pip compile requirements.in > requirements.txt
-```
-
-Utilizar o `uv` é importante para que o arquivo `requirements.txt` possua a commit sha do pacote `dpm` que será instalado na imagem.
-
-## Construção da imagem
-
-Para construir a imagem a partir do `Dockerfile` execute
+Todos os comandos abaixo devem ser prefixados com `infisical run --`, que
+injeta os segredos como variáveis de ambiente para o comando executado, por
+exemplo:
 
 ```bash
-make image=loa2027.1 relatorios=v0.8.01.1 execucao=v0.5.27 reest=v0.2.8
+infisical run -- make build base=1 relatorios=v0.8.01.1 execucao=v0.5.27 reest=v0.2.8
 ```
 
-O valor do argumento `volume` vai ser utilizado para taguear a imagem.
+## Estrutura das imagens
 
-## Publicação da imagem no Dockerhub
+O processo é dividido em duas imagens (ver [ADR 0001](docs/adr/0001-split-base-and-app-images.md)):
 
-Para publicar a imagem no Dockerhub é necessário criar uma [conta](https://hub.docker.com/signup/) e um repositório no [Docker Hub](https://docs.docker.com/docker-hub/repos/#creating-a-repository).
+- **Imagem base** (`base/Dockerfile`) — sistema operacional, R, Python
+  compilado, `diff-pdf`/`diff-so-fancy`, TeX. Muda raramente, é construída e
+  publicada manualmente.
+- **Imagem da aplicação** (`Dockerfile` na raiz) — parte a partir da imagem
+  base e instala as dependências Python via Poetry e os três pacotes privados
+  `relatorios`, `execucao`, `reest`. É a imagem construída a cada release.
 
-Como exemplo, para publicar para o repositório [`splormg/volumes`](https://hub.docker.com/repository/docker/splormg/volumes/), depois de fazer login via Docker Desktop execute
+## Construção da imagem base
+
+Bump da imagem base é uma decisão manual e pouco frequente:
 
 ```bash
-docker tag volumes:loa2027.1 aidsplormg/volumes:loa2027.1
-docker push aidsplormg/volumes:loa2027.1
+infisical run -- make build-base n=2 push=1
 ```
+
+## Construção da imagem da aplicação
+
+Para construir a imagem passando as versões manualmente:
+
+```bash
+infisical run -- make build base=1 relatorios=v0.8.01.1 execucao=v0.5.27 reest=v0.2.8 push=1
+```
+
+Omitir `push=1` para apenas construir a imagem localmente, sem publicar.
+
+## Checagem e build automático de atualizações
+
+Para checar se há novas versões de `relatorios`, `execucao` ou `reest` no
+GitHub em relação ao que está publicado na tag `latest` do Docker Hub:
+
+```bash
+infisical run -- make check-updates
+```
+
+Para checar e, se houver atualização, construir e publicar automaticamente:
+
+```bash
+infisical run -- make release
+```
+
+Esse é o mesmo comando executado diariamente pela Action
+[`publish_image.yaml`](.github/workflows/publish_image.yaml).
+
+## Publicação da imagem no Docker Hub
+
+Nome de usuário, access token e nome da imagem no Docker Hub vêm do Infisical
+(`DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`, `DOCKERHUB_IMAGE_NAME`) — não estão
+hardcoded nos scripts, então mudanças nesses valores não exigem alteração de
+código. O login e o push já acontecem como parte de `make build push=1` /
+`make build-base push=1` / `make release`, não é um passo manual separado.
